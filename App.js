@@ -11,10 +11,14 @@ const HomeScreen = ({ navigation }) =>  {
       <Text>Pantalla principal</Text>
       <Button
         title="Ir a detalle"
-        onPress={() => navigation.navigate('Details', { name: 'alex', id: 2 })}
+        onPress={() => navigation.navigate('Details', { name: 'alex', id: 1 })}
       />
     </View>
   );
+}
+
+HomeScreen.navigationOptions = {
+  title: 'Inicio'
 }
 
 const DetailsScreen = ({ navigation }) => {
@@ -25,10 +29,16 @@ const DetailsScreen = ({ navigation }) => {
       <Text>Detalles de {name}</Text>
       <Button
         title="Volver"
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.setParams({ title: 'Usuario 1' })}
       />
     </View>
   );
+}
+
+DetailsScreen.navigationOptions = ({ navigation }) => {
+  return {
+    title: navigation.getParam('title', 'Cargando...')
+  }
 }
 
 const AppNavigator = createStackNavigator({
