@@ -8,19 +8,21 @@ const HomeScreen = ({ navigation }) =>  {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text>Home Screen</Text>
+      <Text>Pantalla principal</Text>
       <Button
         title="Ir a detalle"
-        onPress={() => navigation.push('Details')}
+        onPress={() => navigation.navigate('Details', { name: 'alex', id: 2 })}
       />
     </View>
   );
 }
 
 const DetailsScreen = ({ navigation }) => {
+  const name = navigation.getParam('name', 'Usuario no encontrado')
+
   return (
     <View style={styles.container}>
-      <Text>Details Screen</Text>
+      <Text>Detalles de {name}</Text>
       <Button
         title="Volver"
         onPress={() => navigation.goBack()}
