@@ -1,8 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
+
+const Logo = () =>
+  <Image
+    source={{
+      uri: 'https://www.syncspider.com/wp-content/uploads/2019/10/twilio_thumb.png',
+      width: 50,
+      height: 50
+    }}
+  />
 
 const HomeScreen = ({ navigation }) =>  {
   return (
@@ -18,7 +27,7 @@ const HomeScreen = ({ navigation }) =>  {
 }
 
 HomeScreen.navigationOptions = {
-  title: 'Inicio'
+  headerTitle: () => <Logo />
 }
 
 const DetailsScreen = ({ navigation }) => {
@@ -35,7 +44,7 @@ const DetailsScreen = ({ navigation }) => {
   );
 }
 
-DetailsScreen.navigationOptions = ({ navigation }) => {
+DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   return {
     title: navigation.getParam('title', 'Cargando...')
   }
@@ -48,7 +57,18 @@ const AppNavigator = createStackNavigator({
   Details: {
     screen: DetailsScreen
   },
-}, { initialRouteName: 'Home' })
+}, {
+  initialRouteName: 'Home',
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#fec'
+    },
+    headerTintColor: '#555',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    }
+  }
+})
 
 export default createAppContainer(AppNavigator)
 
