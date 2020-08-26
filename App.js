@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
@@ -27,15 +27,32 @@ const HomeScreen = ({ navigation }) =>  {
 }
 
 HomeScreen.navigationOptions = {
-  headerTitle: () => <Logo />
+  headerTitle: () => <Logo />,
+  headerRight: (
+    <TouchableOpacity
+        onPress={() => alert("presionado")}
+        style={{ marginRight: 10 }}
+      >
+        <Text>presionar</Text>
+    </TouchableOpacity>
+  )
 }
 
 const DetailsScreen = ({ navigation }) => {
   const name = navigation.getParam('name', 'Usuario no encontrado')
+  const [ count, setCount ] = useState(0)
+  const incrementar = () => setCount(count + 1)
 
+  useEffect(
+    () => {
+      navigation.setParams({ incrementar })
+    }, [ count ]
+  )
+  
   return (
     <View style={styles.container}>
       <Text>Detalles de {name}</Text>
+      <Text>{count}</Text>
       <Button
         title="Volver"
         onPress={() => navigation.setParams({ title: 'Usuario 1' })}
@@ -46,7 +63,15 @@ const DetailsScreen = ({ navigation }) => {
 
 DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   return {
-    title: navigation.getParam('title', 'Cargando...')
+    title: navigation.getParam('title', 'Cargando...'),
+    headerRight: (
+      <TouchableOpacity
+        onPress={navigation.getParam('incrementar')}
+        style={{ marginRight: 10 }}
+      >
+        <Text>incrementar</Text>
+      </TouchableOpacity>
+    )
   }
 }
 
