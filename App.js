@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'
 import { StatusBar } from 'expo-status-bar';
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 const Logo = () =>
   <Image
@@ -61,7 +63,7 @@ const DetailsScreen = ({ navigation }) => {
   );
 }
 
-DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
+DetailsScreen.navigationOptions = ({ navigation }) => {
   return {
     title: navigation.getParam('title', 'Cargando...'),
     headerRight: (
@@ -75,7 +77,7 @@ DetailsScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   }
 }
 
-const AppNavigator = createStackNavigator({
+const AppNavigator = createBottomTabNavigator({
   Home: {
     screen: HomeScreen
   },
@@ -84,15 +86,28 @@ const AppNavigator = createStackNavigator({
   },
 }, {
   initialRouteName: 'Home',
-  defaultNavigationOptions: {
-    headerStyle: {
-      backgroundColor: '#fec'
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      const { routeName } = navigation.state
+      let iconName
+      if(routeName === 'Home') {
+        iconName = `ios-information-circle${focused ? '' : 'outline'}`
+      } else {
+        iconName = `ios-options`
+      }
+      return <Ionicons name={iconName} size={20} tintColor={tintColor} />
     },
-    headerTintColor: '#555',
-    headerTitleStyle: {
-      fontWeight: 'bold',
+    tabBarOptions: {
+      activeTintColor: navigation.state.routeName === 'Home' ? '#e91e63' : 'orange',
+      inactiveTintColor: '#a3a3a3',
+      labelStyle: {
+        fontSize: 16
+      },
+      style: {
+        backgroundColor: '#fec'
+      }
     }
-  }
+  })
 })
 
 const RootStack = createStackNavigator({
