@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createDrawerNavigator } from 'react-navigation-drawer'
 
 const Logo = () =>
   <Image
@@ -22,13 +23,16 @@ const HomeScreen = ({ navigation }) =>  {
       <Text>Pantalla principal</Text>
       <Button
         title='Ir a detalle'
-        onPress={() => navigation.navigate('Details', { name: 'alex', id: 1 })}
+        onPress={() => navigation.openDrawer()}
       />
     </View>
   );
 }
 
 HomeScreen.navigationOptions = {
+  drawerIcon: ({ tintColor }) => {
+    return <Ionicons name='ios-information-circle' size={25} color={tintColor} />
+  },
   headerTitle: () => <Logo />,
   headerRight: (
     <TouchableOpacity
@@ -77,7 +81,7 @@ DetailsScreen.navigationOptions = ({ navigation }) => {
   }
 }
 
-const AppNavigator = createBottomTabNavigator({
+const AppNavigator = createDrawerNavigator({
   Home: {
     screen: HomeScreen
   },
@@ -86,28 +90,6 @@ const AppNavigator = createBottomTabNavigator({
   },
 }, {
   initialRouteName: 'Home',
-  defaultNavigationOptions: ({ navigation }) => ({
-    tabBarIcon: ({ focused, horizontal, tintColor }) => {
-      const { routeName } = navigation.state
-      let iconName
-      if(routeName === 'Home') {
-        iconName = `ios-information-circle${focused ? '' : 'outline'}`
-      } else {
-        iconName = `ios-options`
-      }
-      return <Ionicons name={iconName} size={20} tintColor={tintColor} />
-    },
-    tabBarOptions: {
-      activeTintColor: navigation.state.routeName === 'Home' ? '#e91e63' : 'orange',
-      inactiveTintColor: '#a3a3a3',
-      labelStyle: {
-        fontSize: 16
-      },
-      style: {
-        backgroundColor: '#fec'
-      }
-    }
-  })
 })
 
 const RootStack = createStackNavigator({
