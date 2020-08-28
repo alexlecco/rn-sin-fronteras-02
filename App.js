@@ -16,10 +16,10 @@ const Logo = () =>
 const HomeScreen = ({ navigation }) =>  {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style='auto' />
       <Text>Pantalla principal</Text>
       <Button
-        title="Ir a detalle"
+        title='Ir a detalle'
         onPress={() => navigation.navigate('Details', { name: 'alex', id: 1 })}
       />
     </View>
@@ -30,7 +30,7 @@ HomeScreen.navigationOptions = {
   headerTitle: () => <Logo />,
   headerRight: (
     <TouchableOpacity
-        onPress={() => alert("presionado")}
+        onPress={() => alert('presionado')}
         style={{ marginRight: 10 }}
       >
         <Text>presionar</Text>
@@ -54,8 +54,8 @@ const DetailsScreen = ({ navigation }) => {
       <Text>Detalles de {name}</Text>
       <Text>{count}</Text>
       <Button
-        title="Volver"
-        onPress={() => navigation.setParams({ title: 'Usuario 1' })}
+        title='Abrir modal'
+        onPress={() => navigation.navigate('customModal')}
       />
     </View>
   );
@@ -95,7 +95,15 @@ const AppNavigator = createStackNavigator({
   }
 })
 
-export default createAppContainer(AppNavigator)
+const RootStack = createStackNavigator({
+  MainStack: AppNavigator,
+  customModal: () => <View style={styles.container}><Text>Modal</Text></View>
+}, {
+  mode: 'modal',
+  headerMode: 'none'
+})
+
+export default createAppContainer(RootStack)
 
 const styles = StyleSheet.create({
   container: {
